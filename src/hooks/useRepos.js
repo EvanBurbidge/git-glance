@@ -4,14 +4,12 @@ import { getGitGraph } from '../utils/getGitGraph';
 
 const formatQuery = ({ viewer: { repositories: { nodes, edges, pageInfo } }}) => {
   const formatted = [];
-  debugger;
   for (let i = 0; i < nodes.length; ++i) {
     const formattedItem = {
       id: nodes[i].id,
       href: nodes[i].url,
       name: nodes[i].name,
       prCount: nodes[i].pullRequests.totalCount,
-      cursor: edges[i].cursor,
     }
     formatted.push(formattedItem)
   }
@@ -27,7 +25,9 @@ export const useRepos = () => {
   const [repos, setRepos] = useState([]);
   const [pagingInfo, setPagingInfo] = useState({
     startCursor: null,
-    endCursor: null
+    endCursor: null,
+    hasNextPage: false,
+    hasPreviousPage: false,
   });
   const fetchRepos = async () => {
     const { gitGraph } = await getGitGraph(gitToken);
@@ -35,13 +35,12 @@ export const useRepos = () => {
       const query = await gitGraph(`
         {
           viewer { 
-            repositories(first: 10, isFork: false) {
-              edges {
-                cursor
-              }
+            repositories(first: 10, isFork: false, orderBy:{ field: UPDATED_AT, direction: DESC }) {
               pageInfo {
                 endCursor
                 startCursor
+                hasNextPage,
+                hasPreviousPage
               }
               nodes {
                 id
