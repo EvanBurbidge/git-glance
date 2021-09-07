@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "await-to-js": "3.0.0",
     "firebase": "^9.0.1",
     "graphql": "^15.5.2",
     "npx": "^10.2.2",
@@ -40,5 +41,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "keywords": [],
+  "description": ""
 }
