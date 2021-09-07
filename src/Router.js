@@ -7,8 +7,10 @@ import { ProtectedRoute } from "./components/PrivateRoute";
 const Router = () => {
   return (
     <Switch>
-      <Route path="/login" component={Login} />
-      <ProtectedRoute path="/">
+      <Route path="/" exact={true}>
+        <Login />
+      </Route>
+      <ProtectedRoute path="/repos">
         <Repositories />
       </ProtectedRoute>
       <ProtectedRoute path="/settings">

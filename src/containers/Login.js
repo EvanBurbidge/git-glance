@@ -1,28 +1,19 @@
 import React from 'react';
-import { signInWithPopup, GithubAuthProvider } from '@firebase/auth';
-import { auth } from '../utils/firebase';
-import provider from '../utils/gitAuth';
+import { useAuth } from '../context/loginContext';
 
 
 const Login = () => {
-  const login = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const token = GithubAuthProvider.credentialFromResult(result);
-        debugger;
-        console.log(token);
-      })
-      .catch(error => {
-        GithubAuthProvider.credentialFromError(error);
-      })
-  }
+  const { login } = useAuth();
+  console.log('login component')
   return (
     <div>
+      LOGIN
       <button onClick={login}>
         Login
       </button>
     </div>
   )
+  
 }
 
 export default Login;

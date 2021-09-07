@@ -1,10 +1,26 @@
+import { Octokit } from '@octokit/rest';
 import { graphql } from '@octokit/graphql';
 
-export const getGitGraph = token => {
-  const withDefaults = graphql.defaults({
+export const getOctokit = token => new Octokit({
+  auth: `Bearer ${token},`
+});
+
+export const getGitGraph = async token => {
+  const gitGraph = graphql.defaults({
     headers: {
-      authorization: `bearer ${token}`,
+      authorization: `token ${token}`,
     }
   });
-  return withDefaults;
+  const user = await gitGraph(
+    `{
+      viewer {
+        login
+        email
+      }
+    }`
+  );
+  return {
+    gitGraph,
+    user,
+  }
 }

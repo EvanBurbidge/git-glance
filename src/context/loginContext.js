@@ -4,13 +4,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { auth } from "../utils/firebase";
 import provider from "../utils/gitAuth";
+import { getInstallationId, setInstallationId, removeGitToken } from "../utils/localStorage";
 
 const AuthContext = createContext({});
 
-export const useAuth = () => {
-  console.log(useContext(AuthContext));
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
+
 
 export const AuthProvider = ({ children }) => {
   const [gitToken, setGitToken] = useState(null);
@@ -18,7 +17,6 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
 
   const login = async () => {
-    console.log("login");
     const [err, result] = await to(signInWithPopup(auth, provider));
     if (err) {
       setGitToken(null);
@@ -26,14 +24,25 @@ export const AuthProvider = ({ children }) => {
     } else {
       const token = GithubAuthProvider.credentialFromResult(result);
       setGitToken(token);
+      setInstallationId(token.accessToken);
     }
     setLoading(false);
   };
 
+  const signOut = () => {
+    removeGitToken()
+    auth.signOut();
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      setLoading(false);
+      if (user) {
+        setCurrentUser(user);
+        setLoading(false);
+        setGitToken(getInstallationId());
+      } else {
+        setCurrentUser(null);
+      }
     });
     return unsubscribe;
   });
@@ -42,10 +51,10 @@ export const AuthProvider = ({ children }) => {
     login,
     loading,
     gitToken,
-    currentUser
+    currentUser,
+    signOut,
   };
-  console.log("VALUE");
-  console.log(value);
+
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}

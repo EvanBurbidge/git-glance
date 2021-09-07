@@ -4,7 +4,9 @@ import { AuthProvider } from "./context/loginContext";
 import Router from "./Router";
 import "./utils/firebase";
 
+
 function App() {
+  console.log('app');
   return (
     <AuthProvider>
       <BrowserRouter>
