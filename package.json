@@ -3,13 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.4.10",
     "@octokit/auth-token": "^2.4.5",
     "@octokit/graphql": "^4.8.0",
-    "@octokit/rest": "^18.10.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
     "await-to-js": "3.0.0",
     "firebase": "^9.0.1",
     "graphql": "^15.5.2",
@@ -22,6 +17,16 @@
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.1",
     "web-vitals": "^1.0.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@tailwindcss/forms": "^0.2.1",
+    "autoprefixer": "^10.2.4",
+    "postcss": "^8.2.5",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

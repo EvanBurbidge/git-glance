@@ -3,15 +3,15 @@ import styled from 'styled-components';
 import { PRIMARY } from '../constants/Colours';
 import { useAuth } from '../context/loginContext';
 import { Button } from './Button';
+import { HamburgerMenu } from './HamburgerMenu';
 
 const StyledHeader = styled.div`
   width: 400px;
   height: auto;
   background: ${PRIMARY};
   display: flex;
-  flex-direction: row;
-  justify-content: between;
-  align-items: center;
+  font-size: 12px;
+  color: #ffffff
 `;
 
 const StyledTitle = styled.h3`
@@ -38,9 +38,7 @@ export const Header = () => {
         <StyledTitle>
           Git Glance
         </StyledTitle>
-        <Button onClick={signOut} type="secondary">
-          Signout
-        </Button>
+        <HamburgerMenu />
       </HeaderWrapper>
     </StyledHeader>
   )
