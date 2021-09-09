@@ -20,7 +20,7 @@ export const Header = () => {
     }
   ]
   return (
-    <header className="p-3 bg-primary flex flex-row justify-between text-white items-center align-center">
+    <header className="p-3 bg-primary fixed w-full flex flex-row justify-between text-white items-center align-center">
         <h3 className="tracking-tight font-bold text-xl">
           Git Glance
         </h3>

@@ -8,6 +8,7 @@
     "@octokit/auth-token": "^2.4.5",
     "@octokit/graphql": "^4.8.0",
     "await-to-js": "3.0.0",
+    "dayjs": "^1.10.6",
     "firebase": "^9.0.1",
     "graphql": "^15.5.2",
     "history": "^5.0.1",
