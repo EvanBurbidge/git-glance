@@ -1,4 +1,5 @@
+/*global chrome*/
 
-export const getInstallationId = () => localStorage.getItem('git:glance:installationId');
-export const setInstallationId = id => localStorage.setItem('git:glance:installationId', id);
-export const removeGitToken = id => localStorage.removeItem('git:glance:installationId');
+export const getInstallationId = () => chrome.storage.local.get('git:glance:installationId');
+export const removeGitToken = id => chrome.storage.local.remove('git:glance:installationId');
+export const setInstallationId = id => chrome.storage.local.set({'git:glance:installationId': id}, function () { console.log('set id')});

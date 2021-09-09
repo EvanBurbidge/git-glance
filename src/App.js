@@ -1,20 +1,20 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { AuthProvider } from "./context/loginContext";
 import Router from "./Router";
 import "./utils/firebase";
 
 
 function App() {
-  console.log('app');
+  console.log('app loading')
   return (
-    <BrowserRouter>
-    <AuthProvider>
+    <MemoryRouter>
+      <AuthProvider>
         <div className="App">
           <Router />
         </div>
-    </AuthProvider>
-      </BrowserRouter>
+      </AuthProvider>
+    </MemoryRouter>
   );
 }
 

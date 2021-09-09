@@ -4,6 +4,7 @@ import { useAuth } from '../context/loginContext';
 
 const Login = () => {
   const { login } = useAuth();
+  console.log('login loading')
   return (
     <div>
       LOGIN

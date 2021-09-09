@@ -5,6 +5,7 @@ import Repositories from "./containers/Repositories";
 import { ProtectedRoute } from "./components/PrivateRoute";
 
 const Router = () => {
+  console.log('Router')
   return (
     <Switch>
       <Route path="/" exact={true}>

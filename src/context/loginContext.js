@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
 
   const router = useRouter();
 
+
   const login = async () => {
     const [err, result] = await to(signInWithPopup(auth, provider));
     if (err) {
@@ -43,11 +44,11 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setCurrentUser(user);
-        setLoading(false);
         setGitToken(getInstallationId());
       } else {
         setCurrentUser(null);
       }
+      setLoading(false);
     });
     return unsubscribe;
   });
@@ -59,10 +60,9 @@ export const AuthProvider = ({ children }) => {
     currentUser,
     signOut,
   };
-
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };
