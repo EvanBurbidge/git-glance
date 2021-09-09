@@ -10,7 +10,7 @@ function App() {
   return (
     <MemoryRouter>
       <AuthProvider>
-        <div className="App">
+        <div className="App border-2 border-primary">
           <Router />
         </div>
       </AuthProvider>

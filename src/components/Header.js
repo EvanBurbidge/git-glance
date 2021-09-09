@@ -1,45 +1,30 @@
 import React from 'react';
-import styled from 'styled-components';
-import { PRIMARY } from '../constants/Colours';
+import ActionsMenu from './ActionsMenu';
 import { useAuth } from '../context/loginContext';
-import { Button } from './Button';
-import { HamburgerMenu } from './HamburgerMenu';
-
-const StyledHeader = styled.div`
-  width: 400px;
-  height: auto;
-  background: ${PRIMARY};
-  display: flex;
-  font-size: 12px;
-  color: #ffffff
-`;
-
-const StyledTitle = styled.h3`
-  color: #FFFFFF;
-  font-weight: bold;
-  font-size: 20px;
-  flex-grow:1;
-`;
-
-const HeaderWrapper = styled.div`
-  margin-right: 10px;
-  margin-left: 5px;
-  width: 100%;
-  display: flex;
-  justify-content: between;
-  align-items: center;
-`;
+import { useRouter } from '../hooks/useRouter';
 
 export const Header = () => {
   const { signOut } = useAuth();
+  const router = useRouter();
+  const goToSettings = () => {
+    router.push('/settings');
+  };
+  const actions = [
+    {
+      action: goToSettings,
+      label: 'Settings',
+    },
+    {
+      action: signOut,
+      label: 'Signout'
+    }
+  ]
   return (
-    <StyledHeader>
-      <HeaderWrapper>
-        <StyledTitle>
+    <header className="p-3 bg-primary flex flex-row justify-between text-white items-center align-center">
+        <h3 className="tracking-tight font-bold text-xl">
           Git Glance
-        </StyledTitle>
-        <HamburgerMenu />
-      </HeaderWrapper>
-    </StyledHeader>
+        </h3>
+        <ActionsMenu actions={actions}/>
+    </header>
   )
 };
