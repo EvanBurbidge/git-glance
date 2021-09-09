@@ -8,13 +8,13 @@ import "./utils/firebase";
 function App() {
   console.log('app');
   return (
+    <BrowserRouter>
     <AuthProvider>
-      <BrowserRouter>
         <div className="App">
           <Router />
         </div>
-      </BrowserRouter>
     </AuthProvider>
+      </BrowserRouter>
   );
 }
 

@@ -30,8 +30,8 @@ export const useRepos = () => {
     hasPreviousPage: false,
   });
   const fetchRepos = async () => {
-    const { gitGraph } = await getGitGraph(gitToken);
     try {
+      const { gitGraph } = await getGitGraph(gitToken);
       const query = await gitGraph(`
         {
           viewer { 

@@ -6,6 +6,8 @@ import { auth } from "../utils/firebase";
 import provider from "../utils/gitAuth";
 import { getInstallationId, setInstallationId, removeGitToken } from "../utils/localStorage";
 
+import { useRouter } from '../hooks/useRouter';
+
 const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
@@ -16,6 +18,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
 
+  const router = useRouter();
+
   const login = async () => {
     const [err, result] = await to(signInWithPopup(auth, provider));
     if (err) {
@@ -25,6 +29,7 @@ export const AuthProvider = ({ children }) => {
       const token = GithubAuthProvider.credentialFromResult(result);
       setGitToken(token);
       setInstallationId(token.accessToken);
+      router.push('/repos');
     }
     setLoading(false);
   };
