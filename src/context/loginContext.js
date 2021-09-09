@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
 
   const router = useRouter();
 
-
   const login = async () => {
     const [err, result] = await to(signInWithPopup(auth, provider));
     if (err) {

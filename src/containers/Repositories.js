@@ -1,15 +1,12 @@
 import React from 'react';
-import { useAuth } from '../context/loginContext';
+import { Header } from '../components/Header';
 import { useRepos } from '../hooks/useRepos';
 
 const Repositories = () => {
   const { repos } = useRepos();
-  const { signOut } = useAuth();
   return (
     <div>
-      <button onClick={signOut}>
-        Signout
-      </button>
+      <Header />
       <ul>
         {repos.map(repo => (
           <li id={repo.id} key={repo.id}>
