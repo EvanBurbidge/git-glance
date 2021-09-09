@@ -1,57 +1,27 @@
 import React from 'react';
-import styled from 'styled-components';
-import { PRIMARY, WARNING } from '../constants/Colours';
 
-const baseStyles = `
-  padding: 8px 30px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: bold;
-  border-radius: 3px;
-  outline: 0;
-`;
-
-const PrimaryButton = styled.button`
-  ${baseStyles}
-  background: ${PRIMARY};
-`;
-
-const SecondaryButton = styled.button`
-  ${baseStyles}
-  color: ${PRIMARY};
-  background: #FFFFFF;
-  border: 1px solid ${PRIMARY};
-`;
-
-const WarningButton = styled.button`
-  ${baseStyles}
-  background: ${WARNING};
-`;
-
-const getButtonComponent = type => {
-  switch(type){
-    case "secondary":
-      return SecondaryButton;
-    case "warning":
-      return WarningButton;
+const getClass = type => {
+  switch(type) {
+    case 'error':
+      return 'bg-error text-white';
+    case 'secondary':
+      return 'bg-white hover:bg-white-hover text-primary border border-primary';
     default:
-      return PrimaryButton;
+      return 'bg-primary hover:bg-primary-hover text-white';
   }
 }
 
 export const Button = ({
-  type = '',
   children,
   ...rest
 }) => {
-  debugger;
-  const Component = getButtonComponent(type);
-
+  const classes = getClass(rest.type);
   return (
-    <Component
+    <button
       {...rest}
+      className={`inline-flex items-center px-10 py-2 border border-transparent text-sm font-medium rounded-md disabled:opacity-40 ${rest.extraClasses} ${classes}`}
     >
       {children}
-    </Component>
+    </button>
   )
 }
