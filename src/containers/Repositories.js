@@ -44,6 +44,10 @@ const Repositories = () => {
             }
           />
         ))}
+        <div className="flex border-t border-primary">
+          <div className="flex-grow p-2 text-center hover:bg-gray-100 cursor-pointer border-r border-primary">Newer</div>
+          <div className="flex-grow p-2 text-center hover:bg-gray-100 cursor-pointer">Older</div>
+        </div>
       </div>
     </div>
   )
