@@ -3,12 +3,13 @@ import { Accordion } from '../components/Accordion';
 import { Header } from '../components/Header';
 import { Loading } from '../components/Loading';
 import { RepoListItem } from '../components/Repo/RepoListItem';
+import { RepoPagination } from '../components/Repo/RepoPagination';
 import { RepoPrSubtitle } from '../components/Repo/RepoPrSubtitle';
 import { RepoSubtitle } from '../components/Repo/RepoSubtitle';
 import { useRepos } from '../hooks/useRepos';
 
 const Repositories = () => {
-  const { repos, setRepoToExpand, loading } = useRepos();
+  const { repos, setRepoToExpand, pagingInfo, loading } = useRepos();
   return (
     <div>
       <Header />
@@ -44,10 +45,7 @@ const Repositories = () => {
             }
           />
         ))}
-        <div className="flex border-t border-primary">
-          <div className="flex-grow p-2 text-center hover:bg-gray-100 cursor-pointer border-r border-primary">Newer</div>
-          <div className="flex-grow p-2 text-center hover:bg-gray-100 cursor-pointer">Older</div>
-        </div>
+        <RepoPagination pagingInfo={pagingInfo} />
       </div>
     </div>
   )
