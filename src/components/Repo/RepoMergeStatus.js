@@ -1,19 +1,29 @@
 import React from 'react';
+import ReactTooltip from 'react-tooltip';
 
 export const RepoMergeStatus = ({
   mergeStatus = {},
 }) => {
   if (mergeStatus.CHANGES_REQUESTED > 0) {
     return (
-      <div className="w-3 h-3 rounded-full bg-error" />
+      <>
+        <ReactTooltip />
+        <div className="w-3 h-3 rounded-full bg-error" data-tip="Changes requested"/>
+      </>
     )
   }
   if (mergeStatus.COMMENTED > 0) {
     return (
-      <div className="w-3 h-3 rounded-full bg-warning" />
+      <>
+        <ReactTooltip />
+        <div className="w-3 h-3 rounded-full bg-warning" data-tip="Has comments"/>
+      </>
     )
   }
   return (
-    <div className="w-3 h-3 rounded-full bg-success" />
+    <>
+        <ReactTooltip />
+        <div className="w-3 h-3 rounded-full bg-success" data-tip="Ready to merge" />
+      </>
   )
 }

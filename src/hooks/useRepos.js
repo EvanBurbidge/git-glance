@@ -49,6 +49,7 @@ export const useRepos = () => {
   const { gitToken } = useAuth();
   const [repos, setRepos] = useState([]);
   const [repoToExpand, setRepoToExpand] = useState(null);
+  const [reposLoading, setReposLoading] = useState(false);
   const [pagingInfo, setPagingInfo] = useState({
     startCursor: null,
     endCursor: null,
@@ -56,6 +57,7 @@ export const useRepos = () => {
     hasPreviousPage: false,
   });
   const fetchRepos = async () => {
+    setReposLoading(true);
     try {
       const { gitGraph } = await getGitGraph(gitToken);
       const query = await gitGraph(`
@@ -80,6 +82,9 @@ export const useRepos = () => {
                     url
                     createdAt
                     mergeable
+                    comments {
+                      totalCount
+                    }
                     reviews(first: 50, states: [CHANGES_REQUESTED, COMMENTED]) {
                       nodes {
                         state
@@ -102,6 +107,7 @@ export const useRepos = () => {
     } catch (e) {
       console.error(e);
     }
+    setReposLoading(false);
   };
 
 
@@ -116,6 +122,7 @@ export const useRepos = () => {
     pagingInfo,
     repoToExpand,
     setRepoToExpand,
+    loading: reposLoading
   }
 
 }

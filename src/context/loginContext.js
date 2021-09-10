@@ -7,6 +7,7 @@ import provider from "../utils/gitAuth";
 import { getInstallationId, setInstallationId, removeGitToken } from "../utils/localStorage";
 
 import { useRouter } from '../hooks/useRouter';
+import { Loading } from "../components/Loading";
 
 const AuthContext = createContext({});
 
@@ -31,7 +32,9 @@ export const AuthProvider = ({ children }) => {
       setInstallationId(token.accessToken);
       router.push('/repos');
     }
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500)
   };
 
   const signOut = () => {
@@ -45,9 +48,12 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(user);
         setGitToken(getInstallationId());
       } else {
+        setGitToken(null);
         setCurrentUser(null);
       }
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500)
     });
     return unsubscribe;
   });
@@ -61,7 +67,8 @@ export const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {loading && <Loading />}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

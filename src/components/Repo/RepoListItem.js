@@ -7,15 +7,17 @@ export const RepoListItem = ({
   name = '',
   href = '',
   options = [],
+  paddingAmount = '6',
+  textSize = 'text-lg',
   onClick = () => {},
   SubtitleComponent = <Fragment />
 }) => (
   <div
     onClick={onClick}
-    className="w-full flex justify-between items-center py-6 border-b px-3 cursor-pointer hover:bg-gray-100"
+    className={`w-full flex justify-between items-center py-${paddingAmount} border-b px-3 cursor-pointer hover:bg-gray-100`}
   >
     <div className="flex-grow flex flex-col w-3/4">
-      <h5 className="font-medium text-primary text-lg truncate">{name}</h5>
+      <h5 className={`font-medium text-primary ${textSize} truncate`}>{name}</h5>
       {SubtitleComponent}
     </div>
     <div className="flex-grow flex justify-end text-right">
