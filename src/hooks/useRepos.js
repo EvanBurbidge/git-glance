@@ -61,6 +61,7 @@ const checkIfPrCanMerge = pr => {
 
 const formatQuery = ({ viewer: { repositories: { nodes, pageInfo } } }) => {
   const formatted = [];
+  console.log('formatting')
   for (let i = 0; i < nodes.length; ++i) {
     const formattedItem = {
       id: nodes[i].id,
@@ -86,7 +87,6 @@ export const useRepos = () => {
   const [repos, setRepos] = useState([]);
   const [repoToExpand, setRepoToExpand] = useState(null);
   const [reposLoading, setReposLoading] = useState(false);
-  const [previousAfterCursor, setPreviousAfterCursor] = useState("");
   const [pagingInfo, setPagingInfo] = useState({
     startCursor: null,
     endCursor: null,
@@ -100,7 +100,7 @@ export const useRepos = () => {
 
   const handleAfterFetch = query => {
     const { formatted, pageInfo } = formatQuery(query);
-    setRepos(formatted);
+    setRepos([...repos, ...formatted]);
     setPagingInfo({
       ...pagingInfo,
       ...pageInfo,
@@ -116,14 +116,13 @@ export const useRepos = () => {
       const query = await gitGraph(`
       {
         viewer { 
-          repositories(first: 5, isFork: false, orderBy:{ field: UPDATED_AT, direction: DESC }) {
+          repositories(first: 10, isFork: false, orderBy:{ field: UPDATED_AT, direction: DESC }) {
             ${reposQuery}
           }
         }
       }
       `);
       handleAfterFetch(query);
-      setPreviousAfterCursor(pagingInfo.startCursor);
     } catch (e) {
       console.error(e);
     }
@@ -137,7 +136,7 @@ export const useRepos = () => {
       const query = await gitGraph(`
         query repos($after: String){
           viewer { 
-            repositories(first: 5, isFork: false, after: $after, orderBy:{ field: UPDATED_AT, direction: DESC }) {
+            repositories(first: 25, isFork: false, after: $after, orderBy:{ field: UPDATED_AT, direction: DESC }) {
               ${reposQuery}
             }
           }
@@ -147,39 +146,12 @@ export const useRepos = () => {
           after: pagingInfo.currentEndCursor,
         }
       );
-      setPreviousAfterCursor(pagingInfo.currentEndCursor);
       handleAfterFetch(query);
     } catch (e) {
       console.error(e);
     }
     setReposLoading(false);
   };
-
-  const fetchNewerRepos = async () => {
-    setReposLoading(true);
-    try {
-      const { gitGraph } = await getGitGraph(gitToken);
-      const query = await gitGraph(`
-        query repos($after: String){
-          viewer { 
-            repositories(first: 5, isFork: false, after: $after, orderBy:{ field: UPDATED_AT, direction: DESC }) {
-              ${reposQuery}
-            }
-          }
-        }
-      `,
-        {
-          // after: pagingInfo.endCursor,
-          after: previousAfterCursor,
-        }
-      );
-      handleAfterFetch(query);
-    } catch (e) {
-      console.error(e);
-    }
-    setReposLoading(false);
-  };
-
 
   useEffect(() => {
     if (gitToken) {
@@ -190,9 +162,6 @@ export const useRepos = () => {
   useEffect(() => {
     if (pagingInfo.currentEndCursor.length) {
       fetchOlderRepos();
-    }
-    if (pagingInfo.currentStartCursor.length) {
-      fetchNewerRepos();
     }
   }, [pagingInfo]); // eslint-disable-line
 
