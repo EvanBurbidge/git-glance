@@ -22,7 +22,7 @@ export const Header = () => {
     }
   ]
   return (
-    <header className="p-3 bg-primary fixed w-full flex flex-row justify-between text-white items-center align-center">
+    <header className="p-3 bg-primary fixed flex flex-row justify-between text-white items-center align-center w-full">
         <img src={LogoWhite} className="h-5" alt="git glance logo"/>
         <h3 className="tracking-tight font-bold text-xl">
           Git Glance

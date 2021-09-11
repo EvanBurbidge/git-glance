@@ -18,8 +18,8 @@ export const Accordion = ({
   return (
     <div className="flex flex-col w-full">
        <div
-        className="box-border w-full appearance-none cursor-pointer focus:outline-none flex justify-between"
         onClick={toggleAccordion}
+        className={`box-border w-full appearance-none cursor-pointer focus:outline-none flex justify-between ${isExpanded ? 'bg-draggableBorder' : ''}`}
       >
         {title}
       </div>

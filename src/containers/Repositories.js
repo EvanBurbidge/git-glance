@@ -9,7 +9,7 @@ import { RepoSubtitle } from '../components/Repo/RepoSubtitle';
 import { useRepos } from '../hooks/useRepos';
 
 const Repositories = () => {
-  const { repos, setRepoToExpand, pagingInfo, loading } = useRepos();
+  const { repos, setRepoToExpand, pagingInfo, loading, setCurrentAfter, setCurrentBefore } = useRepos();
   return (
     <div>
       <Header />
@@ -38,14 +38,24 @@ const Repositories = () => {
                   paddingAmount={'4'}
                   textSize=""
                   SubtitleComponent={
-                    <RepoPrSubtitle author={pr.author} state={pr.state} createdAt={pr.createdAt} mergeStatus={pr.mergeStatus} commentsCount={pr.comments.totalCount} />
+                    <RepoPrSubtitle
+                      state={pr.state}
+                      author={pr.author}
+                      createdAt={pr.createdAt}
+                      mergeStatus={pr.mergeStatus}
+                      commentsCount={pr.comments.totalCount}
+                    />
                   }
                 />
               ))
             }
           />
         ))}
-        <RepoPagination pagingInfo={pagingInfo} />
+        <RepoPagination
+          pagingInfo={pagingInfo}
+          setCurrentAfter={setCurrentAfter}
+          setCurrentBefore={setCurrentBefore}
+        />
       </div>
     </div>
   )
