@@ -6,8 +6,7 @@ const reposQuery = `
   pageInfo {
     endCursor
     startCursor
-    hasNextPage,
-    hasPreviousPage
+    hasNextPage
   }
   nodes {
     id
@@ -61,7 +60,6 @@ const checkIfPrCanMerge = pr => {
 
 const formatQuery = ({ viewer: { repositories: { nodes, pageInfo } } }) => {
   const formatted = [];
-  console.log('formatting')
   for (let i = 0; i < nodes.length; ++i) {
     const formattedItem = {
       id: nodes[i].id,
@@ -81,26 +79,36 @@ const formatQuery = ({ viewer: { repositories: { nodes, pageInfo } } }) => {
   };
 }
 
+const filterOnlyWithPrs = repos => repos.filter(repo => repo.prCount > 0);
+
 
 export const useRepos = () => {
   const { gitToken } = useAuth();
   const [repos, setRepos] = useState([]);
   const [repoToExpand, setRepoToExpand] = useState(null);
   const [reposLoading, setReposLoading] = useState(false);
+  // const [searchTerm, setSearchTerm] = useState("");
+  const [showOnlyWithPrs, setShowOnlyWithPrs] = useState(false);
+
+  const [filteredRepos, setFilteredRepos] = useState([]);
+
   const [pagingInfo, setPagingInfo] = useState({
     startCursor: null,
     endCursor: null,
     hasNextPage: false,
-    hasPreviousPage: false,
     currentEndCursor: "",
     currentStartCursor: "",
-    previousEndCursor: "",
-    previousStartCursor: "",
   });
 
   const handleAfterFetch = query => {
     const { formatted, pageInfo } = formatQuery(query);
     setRepos([...repos, ...formatted]);
+    if (showOnlyWithPrs) {
+      const filtered = filterOnlyWithPrs([...repos, ...formatted])
+      setFilteredRepos(filtered);
+    } else {
+      setFilteredRepos([...repos, ...formatted]);
+    }
     setPagingInfo({
       ...pagingInfo,
       ...pageInfo,
@@ -153,6 +161,10 @@ export const useRepos = () => {
     setReposLoading(false);
   };
 
+  const handleShowOnlyWithPrs = (checked) => {
+    setShowOnlyWithPrs(checked);
+  }
+
   useEffect(() => {
     if (gitToken) {
       fetchRepos();
@@ -164,6 +176,16 @@ export const useRepos = () => {
       fetchOlderRepos();
     }
   }, [pagingInfo]); // eslint-disable-line
+
+  useEffect(() => {
+    if(showOnlyWithPrs) {
+      const filtered = filterOnlyWithPrs([...repos]);
+      setFilteredRepos(filtered)
+    } else {
+      debugger
+      setFilteredRepos([...repos]);
+    }
+  }, [showOnlyWithPrs]) // eslint-disable-line
 
   const setCurrentAfter = () => setPagingInfo({
     ...pagingInfo,
@@ -178,13 +200,15 @@ export const useRepos = () => {
   });
 
   return {
-    repos,
     pagingInfo,
     repoToExpand,
+    showOnlyWithPrs,
     setRepoToExpand,
     setCurrentAfter,
     setCurrentBefore,
-    loading: reposLoading
+    repos: filteredRepos,
+    loading: reposLoading,
+    handleShowOnlyWithPrs,
   }
 
 }
