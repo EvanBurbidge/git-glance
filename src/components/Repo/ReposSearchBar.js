@@ -19,7 +19,6 @@ export default function ReposSearchBar({
 
   return (
     <div className="mt-3 p-2 flex align-center items-center justify-end border-b border-gray-200">
-      <input />
       <Switch
         checked={enabled}
         onChange={setEnabled}
