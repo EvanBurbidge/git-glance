@@ -182,7 +182,6 @@ export const useRepos = () => {
       const filtered = filterOnlyWithPrs([...repos]);
       setFilteredRepos(filtered)
     } else {
-      debugger
       setFilteredRepos([...repos]);
     }
   }, [showOnlyWithPrs]) // eslint-disable-line
