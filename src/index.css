@@ -1,6 +1,6 @@
 body {
   width: 400px;
-  height: 600px;
+  height: auto;
   border: 1px solid #212936;
   margin: 0;
   font-family:
@@ -13,18 +13,8 @@ body {
 		sans-serif,
 		'Apple Color Emoji',
 		'Segoe UI Emoji';
-  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
-  /* -webkit-font-smoothing: antialiased; */
-  /* -moz-osx-font-smoothing: grayscale; */
   background: #FFFFFF;
 }
-
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
 
 @tailwind base;
 @tailwind components;
