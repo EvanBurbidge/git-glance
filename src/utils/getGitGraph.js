@@ -6,7 +6,9 @@ export const getGitGraph = async token => {
       authorization: `token ${token}`,
     }
   });
+  const { viewer: { login: username } } = await gitGraph(`{ viewer { login } }`);
   return {
     gitGraph,
+    username,
   }
 }

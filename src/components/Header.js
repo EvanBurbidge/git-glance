@@ -1,21 +1,28 @@
 import React from 'react';
 import ActionsMenu from './ActionsMenu';
-import { useRouter } from '../hooks/useRouter';
 import { useAuth } from '../context/loginContext';
 
 import LogoWhite from '../assets/logo-white.png';
 
-export const Header = () => {
+export const Header = ({ updateQuery = () => {}}) => {
   const { signOut } = useAuth();
-  const router = useRouter();
-  const goToSettings = () => {
-    router.push('/settings');
-  };
   const actions = [
-    // {
-    //   action: goToSettings,
-    //   label: 'Settings',
-    // },
+    {
+      label: 'Created',
+      action: () => updateQuery('created'),
+    },
+    {
+      label: 'Assigned',
+      action: () => updateQuery('assigned'),
+    },
+    {
+      label: 'Mentioned',
+      action: () => updateQuery('mentioned'),
+    },
+    {
+      label: 'Review requested',
+      action: () => updateQuery('review_requested'),
+    },
     {
       action: signOut,
       label: 'Signout'

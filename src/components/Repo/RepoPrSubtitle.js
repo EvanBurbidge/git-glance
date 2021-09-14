@@ -12,7 +12,7 @@ export const RepoPrSubtitle = ({
 }) => {
   return (
     <div className="flex items-center">
-      <RepoMergeStatus mergeStatus={mergeStatus} />
+      <RepoMergeStatus state={state} />
       <p className="ml-1 font-bold text-primary mr-1 text-sm">{author.login}</p>
       <p className="text-sm text-primary">{dayjs(createdAt).format('DD/MM/YYYY')}</p>
       {commentsCount > 0 && (

@@ -2,9 +2,17 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 
 export const RepoMergeStatus = ({
-  mergeStatus = {},
+  state = '',
 }) => {
-  if (mergeStatus.CHANGES_REQUESTED > 0) {
+  if (!state) {
+    return (
+      <>
+        <ReactTooltip />
+        <div className="w-3 h-3 rounded-full border-primary border" data-tip="No status yet on this pr" />
+      </>
+    )
+  }
+  if (state === 'CHANGES_REQUESTED') {
     return (
       <>
         <ReactTooltip />
@@ -12,7 +20,7 @@ export const RepoMergeStatus = ({
       </>
     )
   }
-  if (mergeStatus.COMMENTED > 0) {
+  if (state  === 'COMMENTED') {
     return (
       <>
         <ReactTooltip />
@@ -22,8 +30,8 @@ export const RepoMergeStatus = ({
   }
   return (
     <>
-        <ReactTooltip />
-        <div className="w-3 h-3 rounded-full bg-success" data-tip="Ready to merge" />
-      </>
+      <ReactTooltip />
+      <div className="w-3 h-3 rounded-full bg-success" data-tip="Ready to merge" />
+    </>
   )
 }
