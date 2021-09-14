@@ -18,8 +18,14 @@ const queryBody = `
       comments {
         totalCount
       }
+      repository {
+        name
+      }
       author {
         login
+      }
+      reviews {
+        totalCount
       }
     }
   }

@@ -20,14 +20,14 @@ const Repositories = () => {
             name={pr.title}
             href={pr.url}
             paddingAmount={'4'}
-            textSize=""
             SubtitleComponent={
               <RepoPrSubtitle
                 state={pr.reviewDecision}
-                author={pr.author}
                 createdAt={pr.createdAt}
                 mergeStatus={pr.mergeStatus}
-                commentsCount={pr.comments.totalCount}
+                repoName={pr.repository.name}
+                author={pr.author}
+                commentsCount={pr.comments.totalCount + pr.reviews.totalCount}
               />
             }
           />
