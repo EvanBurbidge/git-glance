@@ -11,7 +11,6 @@ function App() {
     <MemoryRouter>
       <div className="App border rounded-sm border-primary">
         <AuthProvider>
-          <Header />
           <Router />
         </AuthProvider>
       </div>

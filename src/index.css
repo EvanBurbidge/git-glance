@@ -1,8 +1,9 @@
 body {
-  width: 400px;
+  width: 404px;
   height: auto;
   border: 1px solid #212936;
   margin: 0;
+	border-radius: 2px;
   font-family:
 		system-ui,
 		-apple-system, /* Firefox supports this but not yet `system-ui` */
@@ -14,6 +15,8 @@ body {
 		'Apple Color Emoji',
 		'Segoe UI Emoji';
   background: #FFFFFF;
+	/* margin-top: 20px;
+	margin-left: 20px; */
 }
 
 @tailwind base;

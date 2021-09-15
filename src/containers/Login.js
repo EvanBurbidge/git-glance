@@ -7,13 +7,16 @@ import Octo from '../assets/octocat.svg';
 
 
 const Login = () => {
-  const { login, gitToken } = useAuth();
+
   const router = useRouter();
+  const { login, gitToken } = useAuth();
+
   useEffect(() => {
     if (gitToken) {
-      router.push('/repos');
+      router.push('/pulls');
     }
   }, [gitToken]) // eslint-disable-line
+
   return (
     <>
       <Header />

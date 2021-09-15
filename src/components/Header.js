@@ -4,7 +4,7 @@ import { useAuth } from '../context/loginContext';
 
 import LogoWhite from '../assets/logo-white.png';
 
-export const Header = ({ updateQuery = () => {}}) => {
+export const Header = ({ updateQuery = () => { } }) => {
   const { signOut } = useAuth();
   const actions = [
     {
@@ -29,12 +29,12 @@ export const Header = ({ updateQuery = () => {}}) => {
     }
   ]
   return (
-    <header className="p-3 bg-primary fixed flex flex-row justify-between text-white items-center align-center w-full">
-        <img src={LogoWhite} className="h-5" alt="git glance logo"/>
-        <h3 className="tracking-tight font-bold text-xl">
-          Git Glance
-        </h3>
-        <ActionsMenu actions={actions}/>
+    <header className="p-3 bg-primary fixed flex flex-row justify-between text-white items-center align-center rounded-t-sm" style={{ width: '404px'}}>
+      <img src={LogoWhite} className="h-5" alt="git glance logo" />
+      <h3 className="tracking-tight font-bold text-xl">
+        Git Glance
+      </h3>
+      <ActionsMenu actions={actions} />
     </header>
   )
 };
