@@ -1,7 +1,7 @@
 import { Switch, Route } from "react-router-dom";
 import Login from "./containers/Login";
 import Settings from "./containers/Settings";
-import Repositories from "./containers/Repositories";
+import Pulls from "./containers/Pulls";
 import { ProtectedRoute } from "./components/PrivateRoute";
 
 const Router = () => {
@@ -10,8 +10,8 @@ const Router = () => {
       <Route path="/" exact={true}>
         <Login />
       </Route>
-      <ProtectedRoute path="/repos">
-        <Repositories />
+      <ProtectedRoute path="/pulls">
+        <Pulls />
       </ProtectedRoute>
       <ProtectedRoute path="/settings">
         <Settings />

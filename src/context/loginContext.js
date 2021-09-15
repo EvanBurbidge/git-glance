@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
       const token = GithubAuthProvider.credentialFromResult(result);
       setGitToken(token);
       setInstallationId(token.accessToken);
-      router.push('/repos');
+      router.push('/pulls');
     }
     setTimeout(() => {
       setLoading(false);
@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         setCurrentUser(user);
         setGitToken(getInstallationId());
+        router.push('/pulls');
       } else {
         setGitToken(null);
         setCurrentUser(null);
