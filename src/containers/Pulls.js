@@ -1,22 +1,21 @@
 import React from 'react';
-import { Header } from '../components/Header';
-import { Loading } from '../components/Loading';
 import NoData from '../components/NoData';
+import { usePrs } from '../hooks/usePrs';
+import { Header } from '../components/Header';
 import { RepoListItem } from '../components/Repo/RepoListItem';
 import { RepoPagination } from '../components/Repo/RepoPagination';
 import { RepoPrSubtitle } from '../components/Repo/RepoPrSubtitle';
-import { usePrs } from '../hooks/usePrs';
 
 const Pulls = () => {
-  const { pulls, pullsLoading: loading, handleUpdateQuery, fetchPaginatedPrs, pagingInfo } = usePrs();
-  console.log('Pulls')
+  const { pulls, pagingInfo, pullsLoading: loading, setCurrentQuery, fetchOlderPrs, } = usePrs();
   return (
     <div>
-      <Header updateQuery={handleUpdateQuery} />
+      <Header updateQuery={setCurrentQuery} />
       {(!pulls.length || loading) && (
         <NoData loading={loading} />
       )}
       <div className="pt-10">
+        {/* {JSON.stringify(pagingInfo, '', '\t')} */}
         {
           !loading && pulls.map(pr => (
             <RepoListItem
@@ -38,10 +37,7 @@ const Pulls = () => {
           ))
         }
         {pagingInfo.hasNextPage && (
-          <RepoPagination
-            pagingInfo={pagingInfo}
-            fetchMorePrs={fetchPaginatedPrs}
-          />
+          <RepoPagination fetchMorePrs={fetchOlderPrs} />
         )}
       </div>
     </div>

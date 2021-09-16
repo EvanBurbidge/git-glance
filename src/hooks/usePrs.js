@@ -1,35 +1,49 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState} from 'react';
+import { useQuery, gql } from '@apollo/react-hooks';
 import { useAuth } from '../context/loginContext';
-import { getGitGraph } from '../utils/getGitGraph';
 
-const queryBody = `
-  pageInfo {
-    hasNextPage
-    endCursor
-    startCursor
+const VIEWER = gql`
+  {
+    viewer{
+      login
+    }
   }
-  prs:nodes {
-    ...on PullRequest {
-      id
-      url
-      title
-      createdAt
-      reviewDecision
-      comments {
-        totalCount
+`;
+
+const PR_QUERY = gql`
+  query prs($after: String, $queryStr: String!) {
+    search( first: 1, type: ISSUE, query: $queryStr, after: $after) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        endCursor
+        startCursor
       }
-      repository {
-        name
-      }
-      author {
-        login
-      }
-      reviews {
-        totalCount
+      nodes {
+          ...on PullRequest {
+            id
+            url
+            title
+            createdAt
+            reviewDecision
+            comments {
+              totalCount
+            }
+            repository {
+              name
+            }
+            author {
+              login
+            }
+            reviews {
+              totalCount
+            }
+          }
+        
       }
     }
   }
-`
+`;
 
 const queries = {
   created: "is:open is:pr archived:false",
@@ -40,92 +54,54 @@ const queries = {
 
 export const usePrs = () => {
   const { gitToken } = useAuth();
-  const [pulls, setPulls] = useState([]);
-  const [pullsLoading, setPullsLoading] = useState(false);
   const [currentQuery, setCurrentQuery] = useState('created');
-  const [pagingInfo, setPagingInfo] = useState({
-    endCursor: '',
-    startCursor: '',
-    hasNextPage: false,
+  const { data: user = { viewer: { login: '' } } } = useQuery(VIEWER, {
+    skip: !gitToken,
   })
 
-  const previousQuery = useRef(null);
-
-  const handleUpdateQuery = newQuery => {
-    previousQuery.current = currentQuery;
-    setCurrentQuery(newQuery);
-  };
-
-  const handleGetQueryString = username => {
+  const handleGetQueryString = () => {
     switch (currentQuery) {
       case 'assigned':
-        return `${queries.assigned} assigned:${username}`
+        return `${queries.assigned} assigned:${user.viewer.login}`
       case 'mentioned':
-        return `${queries.assigned} mentions:${username}`
+        return `${queries.assigned} mentions:${user.viewer.login}`
       case 'review_requested':
-        return `${queries.assigned} review-requested:${username}`
+        return `${queries.assigned} review-requested:${user.viewer.login}`
       default:
-        return `${queries.created} author:${username}`
+        return `${queries.created} author:${user.viewer.login}`
     }
   };
 
-  const fetchPrs = async () => {
-    setPullsLoading(true);
-    try {
-      const { gitGraph, username } = await getGitGraph(gitToken);
-      const pullsQuery = await gitGraph(`{
-        search(first: 10, type:ISSUE, query: "${handleGetQueryString(username)}") {
-          ${queryBody}
-        }
-      }`);
-      setPulls(pullsQuery.search.prs);
-      setPagingInfo(pullsQuery.search.pageInfo);
-    } catch (e) {
-      console.error(e);
-    }
-    setPullsLoading(false);
-  }
-  
-  const fetchPaginatedPrs = async () => {
-    setPullsLoading(true);
-    try {
-      const { gitGraph, username } = await getGitGraph(gitToken);
-      const pullsQuery = await gitGraph(`
-        query repos($after: String) {
-            search(first: 10, type:ISSUE, after:$after, query: "${handleGetQueryString(username)}") {
-              ${queryBody}
-            }
-          }
-        `,
-        {
-          after: pagingInfo.endCursor,
-        },
-      );
-      setPulls(pullsQuery.search.prs);
-      setPagingInfo(pullsQuery.search.pageInfo);
-    } catch (e) {
-      console.error(e);
-    }
-    setPullsLoading(false);
-  }
+  const { data, loading: pullsLoading, fetchMore } = useQuery(PR_QUERY, {
+    skip: !user.viewer.login.length,
+    variables: {
+      after: null,
+      queryStr: handleGetQueryString(),
+    },
+  });
 
-  useEffect(() => {
-    if (gitToken) {
-      fetchPrs();
-    }
-  }, [gitToken]); // eslint-disable-line
-
-  useEffect(() => {
-    if (previousQuery.current !== currentQuery) {
-      fetchPrs();
-    }
-  }, [currentQuery]); // eslint-disable-line
+  const handleFetchMore = () => {
+    const { endCursor } = data.search.pageInfo;
+    fetchMore({
+      variables: {
+        after: endCursor,
+        queryStr: handleGetQueryString(),
+      },
+      updateQuery: (prevResult, { fetchMoreResult }) => {
+        fetchMoreResult.search.nodes = [
+          ...prevResult.search.nodes,
+          ...fetchMoreResult.search.nodes,
+        ]
+        return fetchMoreResult;
+      }
+    })
+  }
 
   return {
-    pulls,
-    pagingInfo,
     pullsLoading,
-    handleUpdateQuery,
-    fetchPaginatedPrs,
+    setCurrentQuery,
+    fetchOlderPrs: handleFetchMore,
+    pulls: data ? data.search.nodes : [],
+    pagingInfo: data ? data.search.pageInfo : {},
   }
 }

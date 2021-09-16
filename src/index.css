@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@100;400&display=swap');
 body {
   width: 404px;
   height: auto;
@@ -5,6 +6,7 @@ body {
   margin: 0;
 	border-radius: 2px;
   font-family:
+		'Saira',
 		system-ui,
 		-apple-system, /* Firefox supports this but not yet `system-ui` */
 		'Segoe UI',
