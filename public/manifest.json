@@ -2,13 +2,13 @@
   "short_name": "Git glance",
   "name": "Git glance",
   "icons": {
-    "16": "logo512.png",
-    "48": "logo512.png",
-    "128": "logo512.png",
-    "512": "logo512.png"
+    "16": "logo-white.png",
+    "48": "logo-white.png",
+    "128": "logo-white.png",
+    "512": "logo-white.png"
   },
   "browser_action": {
-    "default_icon": "logo512.png",
+    "default_icon": "logo-white.png",
     "default_popup": "index.html"
   },
   "manifest_version": 2,

@@ -12,7 +12,7 @@ const VIEWER = gql`
 
 const PR_QUERY = gql`
   query prs($after: String, $queryStr: String!) {
-    search( first: 1, type: ISSUE, query: $queryStr, after: $after) {
+    search( first: 10, type: ISSUE, query: $queryStr, after: $after) {
       pageInfo {
         hasNextPage
         hasPreviousPage

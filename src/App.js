@@ -9,7 +9,7 @@ import "./utils/firebase";
 function App() {
   return (
     <MemoryRouter>
-      <div className="App border rounded-sm border-primary">
+      <div className="App border rounded-sm border-white">
         <AuthProvider>
           <ApolloLocalProvider>
             <Router />

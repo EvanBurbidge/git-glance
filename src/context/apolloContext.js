@@ -16,7 +16,7 @@ export const ApolloLocalProvider = ({
   children,
 }) => {
   const { gitToken } = useAuth();
-  const [client, setClient] = useState(null);
+  const [client, setClient] = useState({});
 
   useEffect(() => {
     if (gitToken && !client) {
@@ -26,9 +26,6 @@ export const ApolloLocalProvider = ({
     }
   }, [gitToken, client]);
 
-  if (!client) {
-    return <Loading />
-  }
 
   return (
     <ApolloProvider client={client}>

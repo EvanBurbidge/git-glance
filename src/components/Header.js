@@ -29,7 +29,7 @@ export const Header = ({ updateQuery = () => { } }) => {
     }
   ]
   return (
-    <header className="p-3 bg-primary fixed flex flex-row justify-between text-white items-center align-center rounded-t-sm w-full">
+    <header className="p-3 bg-primary fixed flex flex-row justify-between text-white items-center align-center rounded-t-sm" style={{ width: '402px'}}>
       <img src={LogoWhite} className="h-5" alt="git glance logo" />
       <h3 className="tracking-tight font-bold text-xl">
         Git Glance
