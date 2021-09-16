@@ -17,6 +17,6 @@
     "activeTab",
     "storage"
   ],
-  "description": "A plugin to give you an overview of github pull requests.",
+  "description": "View your github pull requests, approve, request changes or mentioned request and authentication via Firebase",
   "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com  https://www.googleapis.com https://apis.google.com; object-src 'self'"
 }

@@ -4,7 +4,10 @@ import { useAuth } from '../context/loginContext';
 
 import LogoWhite from '../assets/logo-white.png';
 
-export const Header = ({ updateQuery = () => { } }) => {
+export const Header = ({
+  showDropdown = true,
+  updateQuery = () => { }
+}) => {
   const { signOut } = useAuth();
   const actions = [
     {
@@ -34,7 +37,7 @@ export const Header = ({ updateQuery = () => { } }) => {
       <h3 className="tracking-tight font-bold text-xl">
         Git Glance
       </h3>
-      <ActionsMenu actions={actions} />
+      {showDropdown && <ActionsMenu actions={actions} />}
     </header>
   )
 };

@@ -19,7 +19,7 @@ const Login = () => {
 
   return (
     <>
-      <Header />
+      <Header showDropdown={false}/>
       <div className="flex flex-col pt-10 w-full h-screen justify-center align-center items-center text-primary text-center px-5">
         <img src={Octo} alt="github-logo" className="w-1/2 mb-6 h-auto" />
         <h3 className="tracking-tight font-bold text-xl">

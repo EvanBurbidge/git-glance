@@ -7,6 +7,7 @@
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
     "apollo-boost": "^0.4.9",
+    "apollo-link-context": "^1.0.20",
     "await-to-js": "3.0.0",
     "dayjs": "^1.10.6",
     "firebase": "^9.0.1",
@@ -57,5 +58,5 @@
     ]
   },
   "keywords": [],
-  "description": "A chrome plugin that allows you to quickly see github pull requests. It uses firebase for authentication."
+  "description": "View your github pull requests, approve, request changes or mentioned request and authentication via Firebase"
 }

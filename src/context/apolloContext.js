@@ -1,34 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider, InMemoryCache } from '@apollo/client';
-import { useAuth } from './loginContext';
-import { Loading } from '../components/Loading';
 
-const apolloClient = token => new ApolloClient({
-  uri: "https://api.github.com/graphql",
-  cache: new InMemoryCache(),
-  headers: {
-    Authorization: `bearer ${token}`
-  }
-})
+import { useAuth } from './loginContext';
+
 
 export const ApolloLocalProvider = ({
   children,
 }) => {
   const { gitToken } = useAuth();
-  const [client, setClient] = useState({});
-
-  useEffect(() => {
-    if (gitToken && !client) {
-      setClient(
-        apolloClient(gitToken)
-      )
-    }
-  }, [gitToken, client]);
-
+  const apolloClient = new ApolloClient({
+    uri: "https://api.github.com/graphql",
+    fetchOptions: {
+      credentials: "include",
+    },
+    request: operation => {
+      operation.setContext({
+        headers: {
+          Authorization: `Bearer ${gitToken || ""}`,
+        }
+      });
+      return operation;
+    },
+    cache: new InMemoryCache(),
+  })
 
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       {children}
     </ApolloProvider>
   )

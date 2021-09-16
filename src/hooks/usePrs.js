@@ -62,7 +62,7 @@ export const usePrs = () => {
   const handleGetQueryString = () => {
     switch (currentQuery) {
       case 'assigned':
-        return `${queries.assigned} assigned:${user.viewer.login}`
+        return `${queries.assigned} assignee:${user.viewer.login}`
       case 'mentioned':
         return `${queries.assigned} mentions:${user.viewer.login}`
       case 'review_requested':
@@ -73,7 +73,7 @@ export const usePrs = () => {
   };
 
   const { data, loading: pullsLoading, fetchMore } = useQuery(PR_QUERY, {
-    skip: !user.viewer.login.length,
+    skip: !user.viewer.login.length || !gitToken,
     variables: {
       after: null,
       queryStr: handleGetQueryString(),
