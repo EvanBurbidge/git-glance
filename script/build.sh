@@ -4,6 +4,7 @@ build() {
     echo 'building react'
 
     rm -rf dist/*
+    rm -rf dist.zip
 
     export INLINE_RUNTIME_CHUNK=false
     export GENERATE_SOURCEMAP=false
