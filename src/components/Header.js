@@ -25,6 +25,15 @@ export const Header = ({
       action: () => updateQuery('review_requested'),
     },
     {
+      action: () => {
+        window.open(
+          'https://www.buymeacoffee.com/thewebuiguy',
+          '_blank' // <- This is what makes it open in a new window.
+        );
+      },
+      label: "Buy me a coffee",
+    },
+    {
       action: signOut,
       label: 'Signout'
     }
