@@ -89,7 +89,6 @@ export const usePrs = () => {
 
   useEffect(() => {
     if (error) {
-      debugger;
       if (error.networkError.statusCode === 401) {
         signOut();
       }
