@@ -1,54 +1,93 @@
 import to from "await-to-js";
+import { getDoc, setDoc, doc, deleteDoc} from 'firebase/firestore';
 import { signInWithPopup, GithubAuthProvider } from "@firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { auth } from "../utils/firebase";
 import provider from "../utils/gitAuth";
-import { Loading } from "../components/Loading";
-import { getInstallationId, setInstallationId, removeGitToken } from "../utils/localStorage";
+import { auth, db } from "../utils/firebase";
+import { useRouter } from '../hooks/useRouter';
 
 
 const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
 
+const writeUserToken = async ({
+  uid,
+  token,
+  provider = 'github.com', 
+}) => {
+  const newDoc = await setDoc(doc(db, 'user_tokens', uid), {
+    token,
+    provider,
+  });
+  return newDoc;
+}
+
+const readUserToken = async uid => {
+  const docRef = doc(db, 'user_tokens', uid);
+  const docData = await getDoc(docRef);
+  return docData.data();
+}
+
+const removeUserToken = async uid => {
+  try {
+    const docRef = doc(db, 'user_tokens', uid);
+    await deleteDoc(docRef);
+    return true;
+  } catch(e) {
+    return false
+  }
+}
+
 
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [gitToken, setGitToken] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [gitTokenResolved, setGitTokenResolved] = useState(false);
+
+  const router = useRouter()
 
   const login = async () => {
     const [err, result] = await to(signInWithPopup(auth, provider));
+    setLoading(true);
     if (err) {
       setGitToken(null);
       GithubAuthProvider.credentialFromError(err);
     } else {
       const token = GithubAuthProvider.credentialFromResult(result);
-      setGitToken(token);
-      setInstallationId(token.accessToken);
+      await writeUserToken({
+        uid: result.user.uid,
+        token: token.accessToken,
+      })
+      setGitToken(token.accessToken);
+      setGitTokenResolved(true);
     }
     setLoading(false);
   };
 
-  const signOut = () => {
-    removeGitToken()
-    auth.signOut();
-  }
+  const signOut = async () => {
+    setGitToken(null)
+    await removeUserToken(auth.currentUser.uid);
+    await auth.signOut();
+  };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      setLoading(true);
+      if (user && !gitToken) {
         setCurrentUser(user);
-        setGitToken(getInstallationId());
-      } else {
-        setGitToken(null);
-        setCurrentUser(null);
+        const token = await readUserToken(user.uid);
+        if (token) {
+          setGitToken(token.token);
+          setGitTokenResolved(true);
+        }
       }
       setLoading(false);
     });
     return unsubscribe;
-  });
+  }, []); // eslint-disable-line
 
   const value = {
     login,
@@ -56,11 +95,11 @@ export const AuthProvider = ({ children }) => {
     loading,
     gitToken,
     currentUser,
+    gitTokenResolved
   };
   return (
     <AuthContext.Provider value={value}>
-      {loading && <Loading />}
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

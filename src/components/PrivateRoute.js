@@ -3,17 +3,17 @@ import { Route, Redirect } from "react-router-dom";
 import { useAuth } from "../context/loginContext";
 
 export const ProtectedRoute = ({ children, ...rest }) => {
-  const { currentUser } = useAuth();
+  const { gitToken } = useAuth();
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        currentUser ? (
+        gitToken?.length ? (
           children
         ) : (
           <Redirect
             to={{
-              pathname: "/",
+              pathname: "/login",
               state: { from: location }
             }}
           />

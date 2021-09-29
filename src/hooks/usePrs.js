@@ -1,14 +1,7 @@
-import { useState} from 'react';
+import { signOut } from '@firebase/auth';
+import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/react-hooks';
 import { useAuth } from '../context/loginContext';
-
-const VIEWER = gql`
-  {
-    viewer{
-      login
-    }
-  }
-`;
 
 const PR_QUERY = gql`
   query prs($after: String, $queryStr: String!) {
@@ -53,27 +46,24 @@ const queries = {
 }
 
 export const usePrs = () => {
-  const { gitToken } = useAuth();
+  const { gitToken, currentUser, signOut } = useAuth();
   const [currentQuery, setCurrentQuery] = useState('created');
-  const { data: user = { viewer: { login: '' } } } = useQuery(VIEWER, {
-    skip: !gitToken,
-  })
 
   const handleGetQueryString = () => {
     switch (currentQuery) {
       case 'assigned':
-        return `${queries.assigned} assignee:${user.viewer.login}`
+        return `${queries.assigned} assignee:${currentUser?.reloadUserInfo.screenName}`
       case 'mentioned':
-        return `${queries.assigned} mentions:${user.viewer.login}`
+        return `${queries.assigned} mentions:${currentUser?.reloadUserInfo.screenName}`
       case 'review_requested':
-        return `${queries.assigned} review-requested:${user.viewer.login}`
+        return `${queries.assigned} review-requested:${currentUser?.reloadUserInfo.screenName}`
       default:
-        return `${queries.created} author:${user.viewer.login}`
+        return `${queries.created} author:${currentUser?.reloadUserInfo.screenName}`
     }
   };
 
-  const { data, loading: pullsLoading, fetchMore } = useQuery(PR_QUERY, {
-    skip: !user.viewer.login.length || !gitToken,
+  const { data, loading: pullsLoading, fetchMore, error } = useQuery(PR_QUERY, {
+    skip: !gitToken,
     variables: {
       after: null,
       queryStr: handleGetQueryString(),
@@ -96,6 +86,14 @@ export const usePrs = () => {
       }
     })
   }
+
+  useEffect(() => {
+    if (error) {
+      if (error.networkError.statusCode === 401) {
+        signOut();
+      }
+    }
+  }, [error]); // eslint-disable-line
 
   return {
     pullsLoading,
