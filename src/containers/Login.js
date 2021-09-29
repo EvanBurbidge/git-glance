@@ -10,7 +10,6 @@ const Login = () => {
 
   const router = useRouter();
   const { login, gitToken } = useAuth();
-
   useEffect(() => {
     if (gitToken) {
       router.push('/pulls');
