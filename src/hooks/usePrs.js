@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/react-hooks';
 import { useAuth } from '../context/loginContext';
 
@@ -53,11 +53,12 @@ const queries = {
 }
 
 export const usePrs = () => {
-  const { gitToken } = useAuth();
+  const { gitToken, signOut } = useAuth();
   const [currentQuery, setCurrentQuery] = useState('created');
-  const { data: user = { viewer: { login: '' } } } = useQuery(VIEWER, {
-    skip: !gitToken,
-  })
+  console.log(gitToken)
+  const { data: user = { viewer: { login: '' } }, error: viewerError } = useQuery(VIEWER, {
+    skip: !gitToken.length,
+  });
 
   const handleGetQueryString = () => {
     switch (currentQuery) {
@@ -72,7 +73,7 @@ export const usePrs = () => {
     }
   };
 
-  const { data, loading: pullsLoading, fetchMore } = useQuery(PR_QUERY, {
+  const { data, loading: pullsLoading, fetchMore, error: prError } = useQuery(PR_QUERY, {
     skip: !user.viewer.login.length || !gitToken,
     variables: {
       after: null,
@@ -96,6 +97,21 @@ export const usePrs = () => {
       }
     })
   }
+
+  useEffect(() => {
+    if (viewerError) {
+      if (viewerError.networkError.statusCode === 401) {
+        debugger;
+        signOut()
+      }
+    }
+    if (prError) {
+      if (prError.networkError.statusCode === 401) {
+        debugger;
+        signOut()
+      }
+    }
+  }, [viewerError, prError]); // eslint-disable-line
 
   return {
     pullsLoading,
