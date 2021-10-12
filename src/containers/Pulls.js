@@ -27,7 +27,6 @@ const Pulls = () => {
               href={pr.url}
               date={pr.createdAt}
               repo={pr.repository.name}
-              author={pr.author}
               state={pr.reviewDecision}
               paddingAmount={'4'}
               SubtitleComponent={

@@ -8,7 +8,7 @@ export const ProtectedRoute = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={({ location }) =>
-        gitToken ? (
+        gitToken?.length ? (
           children
         ) : (
           <Redirect

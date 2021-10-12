@@ -4,7 +4,7 @@ import { useRouter } from '../hooks/useRouter';
 import { Button } from '../components/Button';
 import { Header } from '../components/Header';
 import Octo from '../assets/octocat.svg';
-import { LoginTile } from '../components/LoginTile';
+// import { LoginTile } from '../components/LoginTile';
 
 
 const Login = () => {
@@ -21,7 +21,7 @@ const Login = () => {
     <>
       <Header showDropdown={false}/>
       <div className="flex flex-col items-center justify-center w-full h-screen px-5 pt-10 text-center align-center text-primary">
-        <LoginTile />
+        {/* <LoginTile /> */}
         <img src={Octo} alt="github-logo" className="w-1/2 h-auto mb-6" />
         <h3 className="text-xl font-bold tracking-tight">
           Git Glance
