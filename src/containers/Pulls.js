@@ -5,17 +5,20 @@ import { Header } from '../components/Header';
 import { RepoListItem } from '../components/Repo/RepoListItem';
 import { RepoPagination } from '../components/Repo/RepoPagination';
 import { RepoPrSubtitle } from '../components/Repo/RepoPrSubtitle';
+import { useAuth } from '../context/loginContext';
 
 const Pulls = () => {
-  const { pulls, pagingInfo, pullsLoading: loading, setCurrentQuery, fetchOlderPrs, } = usePrs();
+  const { currentUser } = useAuth();
+  const { pulls, pagingInfo, pullsLoading: loading,viewerLoading, setCurrentQuery, fetchOlderPrs, } = usePrs({
+    viewer: currentUser,
+  });
   return (
     <div>
       <Header updateQuery={setCurrentQuery} />
-      {(!pulls.length || loading) && (
-        <NoData loading={loading} />
+      {(!pulls.length || loading || viewerLoading) && (
+        <NoData loading={loading || viewerLoading} />
       )}
       <div className="pt-10">
-        {/* {JSON.stringify(pagingInfo, '', '\t')} */}
         {
           !loading && pulls.map(pr => (
             <RepoListItem

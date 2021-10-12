@@ -1,14 +1,10 @@
+<<<<<<< HEAD
+=======
+import { signOut } from '@firebase/auth';
+>>>>>>> 3a901f8060c3a7c2cd226d4c5341346d57140a93
 import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/react-hooks';
 import { useAuth } from '../context/loginContext';
-
-const VIEWER = gql`
-  {
-    viewer{
-      login
-    }
-  }
-`;
 
 const PR_QUERY = gql`
   query prs($after: String, $queryStr: String!) {
@@ -53,28 +49,38 @@ const queries = {
 }
 
 export const usePrs = () => {
+<<<<<<< HEAD
   const { gitToken, signOut } = useAuth();
   const [currentQuery, setCurrentQuery] = useState('created');
   console.log(gitToken)
   const { data: user = { viewer: { login: '' } }, error: viewerError } = useQuery(VIEWER, {
     skip: !gitToken.length,
   });
+=======
+  const { gitToken, currentUser, signOut } = useAuth();
+  const [currentQuery, setCurrentQuery] = useState('created');
+>>>>>>> 3a901f8060c3a7c2cd226d4c5341346d57140a93
 
   const handleGetQueryString = () => {
     switch (currentQuery) {
       case 'assigned':
-        return `${queries.assigned} assignee:${user.viewer.login}`
+        return `${queries.assigned} assignee:${currentUser?.reloadUserInfo.screenName}`
       case 'mentioned':
-        return `${queries.assigned} mentions:${user.viewer.login}`
+        return `${queries.assigned} mentions:${currentUser?.reloadUserInfo.screenName}`
       case 'review_requested':
-        return `${queries.assigned} review-requested:${user.viewer.login}`
+        return `${queries.assigned} review-requested:${currentUser?.reloadUserInfo.screenName}`
       default:
-        return `${queries.created} author:${user.viewer.login}`
+        return `${queries.created} author:${currentUser?.reloadUserInfo.screenName}`
     }
   };
 
+<<<<<<< HEAD
   const { data, loading: pullsLoading, fetchMore, error: prError } = useQuery(PR_QUERY, {
     skip: !user.viewer.login.length || !gitToken,
+=======
+  const { data, loading: pullsLoading, fetchMore, error } = useQuery(PR_QUERY, {
+    skip: !gitToken,
+>>>>>>> 3a901f8060c3a7c2cd226d4c5341346d57140a93
     variables: {
       after: null,
       queryStr: handleGetQueryString(),
@@ -99,6 +105,7 @@ export const usePrs = () => {
   }
 
   useEffect(() => {
+<<<<<<< HEAD
     if (viewerError) {
       if (viewerError.networkError.statusCode === 401) {
         debugger;
@@ -112,6 +119,14 @@ export const usePrs = () => {
       }
     }
   }, [viewerError, prError]); // eslint-disable-line
+=======
+    if (error) {
+      if (error.networkError.statusCode === 401) {
+        signOut();
+      }
+    }
+  }, [error]); // eslint-disable-line
+>>>>>>> 3a901f8060c3a7c2cd226d4c5341346d57140a93
 
   return {
     pullsLoading,

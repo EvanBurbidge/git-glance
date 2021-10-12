@@ -8,12 +8,16 @@ export const ProtectedRoute = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={({ location }) =>
+<<<<<<< HEAD
         gitToken ? (
+=======
+        gitToken?.length ? (
+>>>>>>> 3a901f8060c3a7c2cd226d4c5341346d57140a93
           children
         ) : (
           <Redirect
             to={{
-              pathname: "/",
+              pathname: "/login",
               state: { from: location }
             }}
           />
