@@ -5,7 +5,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import provider from "../utils/gitAuth";
 import { auth, db } from "../utils/firebase";
-import { useRouter } from '../hooks/useRouter';
 
 
 const AuthContext = createContext({});
@@ -42,14 +41,13 @@ const removeUserToken = async uid => {
 
 
 export const AuthProvider = ({ children }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [gitToken, setGitToken] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [gitTokenResolved, setGitTokenResolved] = useState(false);
 
-  const router = useRouter()
-
   const login = async () => {
+    setLoading(true);
     const [err, result] = await to(signInWithPopup(auth, provider));
     setLoading(true);
     if (err) {

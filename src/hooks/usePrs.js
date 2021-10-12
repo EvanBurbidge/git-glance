@@ -1,4 +1,3 @@
-import { signOut } from '@firebase/auth';
 import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/react-hooks';
 import { useAuth } from '../context/loginContext';

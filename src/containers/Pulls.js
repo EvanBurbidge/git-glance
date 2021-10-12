@@ -18,13 +18,16 @@ const Pulls = () => {
       {(!pulls.length || loading || viewerLoading) && (
         <NoData loading={loading || viewerLoading} />
       )}
-      <div className="pt-10">
+      <div className="pt-14">
         {
           !loading && pulls.map(pr => (
             <RepoListItem
               key={pr.id}
               name={pr.title}
               href={pr.url}
+              date={pr.createdAt}
+              repo={pr.repository.name}
+              state={pr.reviewDecision}
               paddingAmount={'4'}
               SubtitleComponent={
                 <RepoPrSubtitle
