@@ -5,7 +5,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import provider from "../utils/gitAuth";
 import { auth, db } from "../utils/firebase";
-import { useRouter } from '../hooks/useRouter';
 
 
 const AuthContext = createContext({});
@@ -44,13 +43,8 @@ const removeUserToken = async uid => {
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [gitToken, setGitToken] = useState(null);
-<<<<<<< HEAD
-=======
   const [currentUser, setCurrentUser] = useState(null);
   const [gitTokenResolved, setGitTokenResolved] = useState(false);
-
-  const router = useRouter()
->>>>>>> 3a901f8060c3a7c2cd226d4c5341346d57140a93
 
   const login = async () => {
     setLoading(true);
@@ -61,17 +55,12 @@ export const AuthProvider = ({ children }) => {
       GithubAuthProvider.credentialFromError(err);
     } else {
       const token = GithubAuthProvider.credentialFromResult(result);
-<<<<<<< HEAD
-      setGitToken(token.accessToken);
-      setInstallationId(token.accessToken);
-=======
       await writeUserToken({
         uid: result.user.uid,
         token: token.accessToken,
       })
       setGitToken(token.accessToken);
       setGitTokenResolved(true);
->>>>>>> 3a901f8060c3a7c2cd226d4c5341346d57140a93
     }
     setLoading(false);
   };
@@ -82,21 +71,6 @@ export const AuthProvider = ({ children }) => {
     await auth.signOut();
   };
 
-<<<<<<< HEAD
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       setCurrentUser(user);
-  //       setGitToken(getInstallationId());
-  //     } else {
-  //       setGitToken(null);
-  //       setCurrentUser(null);
-  //     }
-  //     setLoading(false);
-  //   });
-  //   return unsubscribe;
-  // });
-=======
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setLoading(true);
@@ -112,19 +86,14 @@ export const AuthProvider = ({ children }) => {
     });
     return unsubscribe;
   }, []); // eslint-disable-line
->>>>>>> 3a901f8060c3a7c2cd226d4c5341346d57140a93
 
   const value = {
     login,
     signOut,
     loading,
     gitToken,
-<<<<<<< HEAD
-    // currentUser,
-=======
     currentUser,
     gitTokenResolved
->>>>>>> 3a901f8060c3a7c2cd226d4c5341346d57140a93
   };
   return (
     <AuthContext.Provider value={value}>

@@ -2,13 +2,15 @@ import React from 'react';
 import { Fragment } from 'react/cjs/react.production.min';
 import ActionsMenu from '../ActionsMenu';
 import { RepoListLink } from './RepoListLink';
+import { RepoMergeStatus } from './RepoMergeStatus';
 
 export const RepoListItem = ({
   name = '',
   href = '',
+  state = '',
   options = [],
   paddingAmount = '6',
-  textSize = 'text-lg',
+  textSize = 'text-md',
   onClick = () => {},
   SubtitleComponent = <Fragment />
 }) => (
@@ -16,11 +18,14 @@ export const RepoListItem = ({
     onClick={onClick}
     className={`w-full flex justify-between items-center py-${paddingAmount} border-b px-3 cursor-pointer hover:bg-gray-100`}
   >
-    <div className="flex-grow flex flex-col w-3/4">
-      <h5 className={`font-medium text-primary ${textSize} truncate`}>{name}</h5>
+    <div className="flex flex-col flex-grow w-3/4">
+      <div className="flex items-center w-full align-center">
+      <RepoMergeStatus state={state}/>
+      <a href={href} className={`font-medium text-primary ${textSize} ml-2 truncate`} target="_blank" rel="noreferrer">{name}</a>
+      </div>
       {SubtitleComponent}
     </div>
-    <div className="flex-grow flex justify-end text-right">
+    <div className="flex justify-end flex-grow text-right">
       {Boolean(options.length) && <ActionsMenu options={options} />}
       <RepoListLink href={href} />
     </div>

@@ -8,7 +8,7 @@ export const RepoMergeStatus = ({
     return (
       <>
         <ReactTooltip />
-        <div className="w-3 h-3 rounded-full border-primary border" data-tip="No status yet on this pr" />
+        <div className="w-3 h-3 border rounded-full border-primary" data-tip="No status yet on this pr" />
       </>
     )
   }

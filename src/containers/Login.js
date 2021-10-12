@@ -4,6 +4,7 @@ import { useRouter } from '../hooks/useRouter';
 import { Button } from '../components/Button';
 import { Header } from '../components/Header';
 import Octo from '../assets/octocat.svg';
+import { LoginTile } from '../components/LoginTile';
 
 
 const Login = () => {
@@ -19,12 +20,13 @@ const Login = () => {
   return (
     <>
       <Header showDropdown={false}/>
-      <div className="flex flex-col pt-10 w-full h-screen justify-center align-center items-center text-primary text-center px-5">
-        <img src={Octo} alt="github-logo" className="w-1/2 mb-6 h-auto" />
-        <h3 className="tracking-tight font-bold text-xl">
+      <div className="flex flex-col items-center justify-center w-full h-screen px-5 pt-10 text-center align-center text-primary">
+        <LoginTile />
+        <img src={Octo} alt="github-logo" className="w-1/2 h-auto mb-6" />
+        <h3 className="text-xl font-bold tracking-tight">
           Git Glance
         </h3>
-        <p className="mt-3 text-base text-gray-500 mb-6">A quick way to glance at your repos and pull requests for easier navigation</p>
+        <p className="mt-3 mb-6 text-base text-gray-500">A quick way to glance at your repos and pull requests for easier navigation</p>
         <Button onClick={login}>
           Login
         </Button>
