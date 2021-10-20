@@ -17,7 +17,7 @@ export const getProviderInstance = (providerName = '') => {
   provider.setCustomParameters({
     'allow_signup': 'false'
   });
-
+  
   return provider;
 
 }

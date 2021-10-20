@@ -68,20 +68,19 @@ export const AuthProvider = ({ children }) => {
 
   const loginWithCustomProvider = async (providerName) => {
     const customProvider = getProviderInstance(providerName);
-    debugger;
     setLoading(true)
-    const [err, result] = await to(signInWithPopup(auth, customProvider));
-    if (err) {
-      setGitToken(null);
-      OAuthProvider.credentialFromError(err);
-    } else {
-      const token = await GithubAuthProvider.credentialFromResult(result);
+    try {
+      const result = await signInWithPopup(auth, customProvider);
+      debugger;
+      const token = await customProvider.credentialFromResult(auth, result);
       await writeUserToken({
         uid: result.user.uid,
         token: token.accessToken,
       })
       setGitToken(token.accessToken);
       setGitTokenResolved(true);
+    } catch (e) {
+      console.error(e);
     }
     setLoading(false);
   }
