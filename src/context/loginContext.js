@@ -1,10 +1,11 @@
 import to from "await-to-js";
 import { getDoc, setDoc, doc, deleteDoc} from 'firebase/firestore';
-import { signInWithPopup, GithubAuthProvider } from "@firebase/auth";
+import { signInWithPopup, GithubAuthProvider, OAuthProvider } from "@firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import provider from "../utils/gitAuth";
 import { auth, db } from "../utils/firebase";
+import { getProviderInstance } from "../utils/OauthProvider";
 
 
 const AuthContext = createContext({});
@@ -65,6 +66,26 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const loginWithCustomProvider = async (providerName) => {
+    const customProvider = getProviderInstance(providerName);
+    debugger;
+    setLoading(true)
+    const [err, result] = await to(signInWithPopup(auth, customProvider));
+    if (err) {
+      setGitToken(null);
+      OAuthProvider.credentialFromError(err);
+    } else {
+      const token = await GithubAuthProvider.credentialFromResult(result);
+      await writeUserToken({
+        uid: result.user.uid,
+        token: token.accessToken,
+      })
+      setGitToken(token.accessToken);
+      setGitTokenResolved(true);
+    }
+    setLoading(false);
+  }
+
   const signOut = async () => {
     setGitToken(null)
     await removeUserToken(auth.currentUser.uid);
@@ -93,7 +114,8 @@ export const AuthProvider = ({ children }) => {
     loading,
     gitToken,
     currentUser,
-    gitTokenResolved
+    gitTokenResolved,
+    loginWithCustomProvider
   };
   return (
     <AuthContext.Provider value={value}>

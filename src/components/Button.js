@@ -19,7 +19,7 @@ export const Button = ({
   return (
     <button
       {...rest}
-      className={`inline-flex items-center px-10 py-2 border border-transparent text-sm font-medium rounded-md disabled:opacity-40 ${rest.extraClasses} ${classes}`}
+      className={`inline-flex items-center text-center px-10 py-2 border border-transparent text-sm font-medium rounded-md disabled:opacity-40 ${rest.extraClasses} ${classes}`}
     >
       {children}
     </button>
