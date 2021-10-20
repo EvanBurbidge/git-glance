@@ -43,7 +43,7 @@ const removeUserToken = async uid => {
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [gitToken, setGitToken] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
   const [gitTokenResolved, setGitTokenResolved] = useState(false);
 
   const login = async () => {
