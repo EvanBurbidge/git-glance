@@ -7,7 +7,7 @@ export const Header = ({
   showDropdown = true,
   updateQuery = () => { }
 }) => {
-  const { signOut } = useAuth();
+  const { signOut, currentUser } = useAuth();
   const router = useRouter();
   const handleSignOut = () => {
     signOut();
@@ -38,6 +38,7 @@ export const Header = ({
         );
       },
       label: "Buy me a coffee",
+      divider: true,
     },
     {
       action: handleSignOut,
@@ -53,7 +54,7 @@ export const Header = ({
       <h3 className="text-xl font-bold tracking-tight">
         Git Glance
       </h3>
-      {showDropdown && <ActionsMenu actions={actions} />}
+      {showDropdown && <ActionsMenu actions={actions} currentUser={currentUser} />}
     </header>
   )
 };
