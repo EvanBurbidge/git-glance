@@ -71,7 +71,6 @@ export const AuthProvider = ({ children }) => {
     setLoading(true)
     try {
       const result = await signInWithPopup(auth, customProvider);
-      debugger;
       const token = await customProvider.credentialFromResult(auth, result);
       await writeUserToken({
         uid: result.user.uid,
