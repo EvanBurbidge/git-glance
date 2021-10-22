@@ -9,9 +9,7 @@ const Splash = () => {
   const router = useRouter();
 
   useEffect(() => {
-      if (!loading && !gitToken) {
-        setTimeout(() => router.push('/login'), 1500);
-      } else {
+      if (!loading && gitToken) {
         setTimeout(() => router.push('/pulls'), 1500);
       }
   }, [loading, gitToken, gitTokenResolved]) // eslint-disable-line
